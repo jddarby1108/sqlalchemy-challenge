@@ -59,20 +59,19 @@ def names():
     session.close()
 
     # Convert list of tuples into normal list
-    all_names = list(np.ravel(results))
+    # all_names = list(np.ravel(results))
     
-    print(all_names)
-    return jsonify(all_names)
+    # print(all_names)
+    # return jsonify(all_names)
 
     # Convert the query results to a dictionary using `date` as the key and `prcp` as the value.
-    # all_prcp = []
-    # for row in results:
-    #     prcp_dict = {}
-    #     row.date = row.prcp
-    #     prcp_dict = {"date", "prcp"}
-    #     all_prcp.append(prcp_dict)
-    # # print(all_prcp)
-    # return jsonify(all_prcp)
+    all_prcp = []
+    for row in results:
+        prcp_dict = {}
+        prcp_dict[row.date] = row.prcp
+        all_prcp.append(prcp_dict)
+    # print(all_prcp)
+    return jsonify(all_prcp)
 
 
 @app.route("/api/v1.0/stations")
@@ -96,7 +95,7 @@ def stations():
 def tobs():
     """Return a list of all tobs data"""
 
-    # Query all most active station
+    # Query the dates and temperature observations of the most active station for the last year of data.
     session = Session(engine)
     results = session.query(Measurement.station, func.count(Measurement.tobs)).group_by(Measurement.station).order_by(func.count(Measurement.tobs)).all()[-1]
     
@@ -108,15 +107,32 @@ def tobs():
     print(all_tobs)
     return jsonify(all_tobs)
 
-# @app.route("/api/v1.0/passengers")
-# def passengers():
-#     """Return a list of passenger data including the name, age, and sex of each passenger"""
+# @app.route("/api/v1.0/<start>")
+# @app.route("/api/v1.0/<start>/<end>")
+
+# # def passengers():
+#     """Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.r"""
 
 #     # Open a communication session with the database
 #     session = Session(engine)
 
-#     # Query all passengers
-#     results = session.query(Passenger).all()
+#     # Define method
+#     results = calc_temps(start_date=None, end_date=None):
+#     # """TMIN, TAVG, and TMAX for a list of dates.
+    
+#     # Args:
+#     #     start_date (string): A date string in the format %Y-%m-%d
+#     #     end_date (string): A date string in the format %Y-%m-%d
+        
+#     # Returns:
+#     #     TMIN, TAVE, and TMAX
+#     # """
+    
+#     return session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+#         filter(Measurement.date >= start_date).filter(Measurement.date <= end_date).all()
+
+# # # function usage example
+# # print(calc_temps('2012-02-28', '2012-03-05'))
 
 #     # close the session to end the communication with the database
 #     session.close()
