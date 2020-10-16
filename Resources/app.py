@@ -107,46 +107,26 @@ def tobs():
     print(all_tobs)
     return jsonify(all_tobs)
 
-# @app.route("/api/v1.0/<start>")
-# @app.route("/api/v1.0/<start>/<end>")
+@app.route("/api/v1.0/<start>")
+@app.route("/api/v1.0/<start>/<end>")
 
-# # def passengers():
-#     """Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.r"""
+#     start = start_date
+#     end = end_date
 
-#     # Open a communication session with the database
+# def start():
+
+#     # Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.
+
 #     session = Session(engine)
-
-#     # Define method
-#     results = calc_temps(start_date=None, end_date=None):
-#     # """TMIN, TAVG, and TMAX for a list of dates.
-    
-#     # Args:
-#     #     start_date (string): A date string in the format %Y-%m-%d
-#     #     end_date (string): A date string in the format %Y-%m-%d
-        
-#     # Returns:
-#     #     TMIN, TAVE, and TMAX
-#     # """
-    
-#     return session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+#     results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
 #         filter(Measurement.date >= start_date).filter(Measurement.date <= end_date).all()
-
-# # # function usage example
-# # print(calc_temps('2012-02-28', '2012-03-05'))
 
 #     # close the session to end the communication with the database
 #     session.close()
 
-#     # Create a dictionary from the row data and append to a list of all_passengers
-#     all_passengers = []
-#     for passenger in results:
-#         passenger_dict = {}
-#         passenger_dict["name"] = passenger.name
-#         passenger_dict["age"] = passenger.age
-#         passenger_dict["sex"] = passenger.sex
-#         all_passengers.append(passenger_dict)
-
-#     return jsonify(all_passengers)
+#     all_calcs = list(np.ravel(results))
+    
+#     return jsonify(all_calcs)
 
 
 if __name__ == '__main__':
